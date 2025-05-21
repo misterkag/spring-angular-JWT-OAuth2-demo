@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card mt-5">
+        <div class="card-header">
+          <h3 class="text-center">Profil</h3>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nom d'utilisateur:</strong> {{ currentUser.username }}</p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Email:</strong> {{ currentUser.email }}</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <p><strong>Rôles:</strong></p>
+              <ul>
+                <li *ngFor="let role of currentUser.roles">{{ role }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 

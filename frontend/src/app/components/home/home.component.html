@@ -1,0 +1,99 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container">
+    <a class="navbar-brand" href="#">Spring Angular Auth</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home" routerLinkActive="active">Accueil</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a class="nav-link" routerLink="/profile" routerLinkActive="active">Profil</a>
+        </li>
+        <li class="nav-item" *ngIf="showAdminBoard">
+          <a class="nav-link" routerLink="/admin" routerLinkActive="active">Admin</a>
+        </li>
+        <li class="nav-item" *ngIf="showModeratorBoard">
+          <a class="nav-link" routerLink="/mod" routerLinkActive="active">Modérateur</a>
+        </li>
+      </ul>
+      <ul class="navbar-nav">
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <a class="nav-link" routerLink="/login" routerLinkActive="active">Connexion</a>
+        </li>
+        <li class="nav-item" *ngIf="!isLoggedIn">
+          <a class="nav-link" routerLink="/register" routerLinkActive="active">Inscription</a>
+        </li>
+        <li class="nav-item" *ngIf="isLoggedIn">
+          <a class="nav-link" (click)="logout()" style="cursor: pointer;">Déconnexion</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="container mt-3">
+  <div *ngIf="isLoggedIn && currentUser">
+    <header class="jumbotron bg-light p-5 rounded-3 mb-4">
+      <h1 class="display-5 fw-bold">Bienvenue !</h1>
+      <p class="col-md-8 fs-4">
+        Connecté en tant que : 
+        <strong>{{ currentUser.username || currentUser.email || 'Utilisateur' }}</strong>
+      </p>
+      <p *ngIf="userRoles && userRoles.length > 0" class="col-md-8 fs-5">
+        Rôles : <strong>{{ userRoles.join(', ') }}</strong>
+      </p>
+      <p *ngIf="currentUser.provider" class="col-md-8 fs-5">
+        Authentifié via : <strong>{{ currentUser.provider }}</strong>
+      </p>
+    </header>
+
+    <div class="alert alert-info">
+      <h4 class="alert-heading">À propos de cette application</h4>
+      <p>Ceci est une application de démonstration illustrant l'authentification avec Spring Boot et Angular, utilisant JWT pour l'authentification classique et OAuth2 pour la connexion via des fournisseurs externes.</p>
+      <hr>
+      <p class="mb-0">Explorez les différentes fonctionnalités et types de comptes pour voir les mécanismes d'authentification en action.</p>
+    </div>
+
+    <div *ngIf="userRoles.includes('ROLE_ADMIN')" class="mt-4 p-3 border rounded">
+      <h5>Panneau d'Administration</h5>
+      <p>Cette section n'est visible que par les utilisateurs ayant le rôle ADMIN.</p>
+      <a routerLink="/admin" class="btn btn-danger">Accéder au panneau Admin</a>
+    </div>
+
+    <div *ngIf="userRoles.includes('ROLE_MODERATOR') && !userRoles.includes('ROLE_ADMIN')" class="mt-4 p-3 border rounded">
+      <h5>Panneau Modérateur</h5>
+      <p>Cette section n'est visible que par les utilisateurs ayant le rôle MODERATOR.</p>
+      <a routerLink="/mod" class="btn btn-warning">Accéder au panneau Modérateur</a>
+    </div>
+  </div>
+
+  <div *ngIf="!isLoggedIn">
+    <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Bienvenue sur Spring Angular Auth</h1>
+        <p class="col-md-8 fs-4">Une application de démonstration complète illustrant l'authentification JWT et OAuth2 avec Spring Boot et Angular.</p>
+        <p>Explorez les fonctionnalités d'authentification, créez un compte ou connectez-vous avec Google.</p>
+        <a class="btn btn-primary btn-lg me-2" routerLink="/login" role="button">Se connecter</a>
+        <a class="btn btn-success btn-lg" routerLink="/register" role="button">S'inscrire</a>
+      </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-white bg-dark rounded-3">
+          <h2>Authentification Classique</h2>
+          <p>Inscrivez-vous et connectez-vous avec un nom d'utilisateur et un mot de passe. Les sessions sont gérées à l'aide de tokens JWT sécurisés.</p>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border rounded-3">
+          <h2>Intégration OAuth2</h2>
+          <p>Connectez-vous facilement et en toute sécurité en utilisant votre compte Google. Démontre l'intégration d'un fournisseur OAuth2 externe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
